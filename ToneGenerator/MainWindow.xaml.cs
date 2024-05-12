@@ -25,9 +25,9 @@ namespace ToneGenerator
 	{
         private System.Windows.Forms.NotifyIcon NotifyIcon;
 
-        public double MinimumFrequency { get; private set; } = Double.Parse(System.Configuration.ConfigurationManager.AppSettings["MinimumFrequency"]);
-        public double MaximumFrequency { get; private set; } = Double.Parse(System.Configuration.ConfigurationManager.AppSettings["MaximumFrequency"]);
-        public bool MinimizeTray { get; private set; } = Boolean.Parse(System.Configuration.ConfigurationManager.AppSettings["MinimizeTray"]);
+        public double MinimumFrequency { get; private set; }
+        public double MaximumFrequency { get; private set; }
+        public bool MinimizeTray { get; private set; }
 
         public ToneAudioRenderer ToneAudioRenderer
 		{
@@ -40,6 +40,11 @@ namespace ToneGenerator
 
         public MainWindow()
         {
+            var appSettings = System.Configuration.ConfigurationManager.AppSettings;
+            MinimumFrequency = Double.Parse(appSettings["MinimumFrequency"]);
+            MaximumFrequency = Double.Parse(appSettings["MaximumFrequency"]);
+            MinimizeTray = Boolean.Parse(appSettings["MinimizeTray"]);
+
             InitializeComponent();
             ToneAudioRenderer = new ToneAudioRenderer();
 
