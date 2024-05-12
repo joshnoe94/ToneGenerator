@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ToneGenerator" ResizeMode="CanMinimize"
         mc:Ignorable="d" Name="root" Background="#313131" Icon="icon.ico"
         Title="Tone Generator" Width="300" SizeToContent="Height"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         StateChanged="Window_StateChanged">
     <Window.Resources>
         <Style TargetType="{x:Type TextBlock}">
@@ -48,7 +49,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Slider Value="{Binding Path=ToneAudioRenderer.Frequency, ElementName=root, Mode=TwoWay}" Minimum="0.0" Maximum="10000.0" IsSnapToTickEnabled="True" TickFrequency="1.0" Margin="5,5,5,3" SmallChange="1" LargeChange="10"/>
+                <Slider Value="{Binding Path=ToneAudioRenderer.Frequency, ElementName=root, Mode=TwoWay}" Minimum="{Binding MinimumFrequency}" Maximum="{Binding MaximumFrequency}" IsSnapToTickEnabled="True" TickFrequency="1.0" Margin="5,5,5,3" SmallChange="1" LargeChange="10"/>
                 <TextBlock Text="Frequency" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,5,3"/>
             </Grid>
         </Border>

@@ -23,13 +23,17 @@ namespace ToneGenerator
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public ToneAudioRenderer ToneAudioRenderer
+        private System.Windows.Forms.NotifyIcon NotifyIcon;
+
+        public double MinimumFrequency { get; private set; } = Double.Parse(System.Configuration.ConfigurationManager.AppSettings["MinimumFrequency"]);
+        public double MaximumFrequency { get; private set; } = Double.Parse(System.Configuration.ConfigurationManager.AppSettings["MaximumFrequency"]);
+        public bool MinimizeTray { get; private set; } = Boolean.Parse(System.Configuration.ConfigurationManager.AppSettings["MinimizeTray"]);
+
+        public ToneAudioRenderer ToneAudioRenderer
 		{
 			get { return (ToneAudioRenderer)GetValue(ToneAudioRendererProperty); }
 			set { SetValue(ToneAudioRendererProperty, value); }
 		}
-
-        private System.Windows.Forms.NotifyIcon NotifyIcon;
 
 		public static readonly DependencyProperty ToneAudioRendererProperty = DependencyProperty.Register(
 			"ToneAudioRenderer", typeof(ToneAudioRenderer), typeof(MainWindow), new PropertyMetadata(null));
@@ -42,7 +46,6 @@ namespace ToneGenerator
             NotifyIcon = new System.Windows.Forms.NotifyIcon();
             Uri iconUri = new Uri("/icon.ico", UriKind.Relative);
             NotifyIcon.Icon = new System.Drawing.Icon(Application.GetResourceStream(iconUri).Stream);
-
             NotifyIcon.MouseDoubleClick +=
                 new System.Windows.Forms.MouseEventHandler(NotifyIcon_MouseDoubleClick);
         }
@@ -50,19 +53,15 @@ namespace ToneGenerator
 
         void NotifyIcon_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            this.WindowState = WindowState.Normal;
+            WindowState = WindowState.Normal;
             NotifyIcon.Visible = false;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Minimized)
+            if (MinimizeTray && WindowState == WindowState.Minimized)
             {
-                this.ShowInTaskbar = false;
-                Console.WriteLine("Disabled Show In Taskbar");
-                //MyNotifyIcon.BalloonTipTitle = "Minimize Sucessful";
-                //MyNotifyIcon.BalloonTipText = "Minimized the app ";
-                //MyNotifyIcon.ShowBalloonTip(400);
+                ShowInTaskbar = false;
                 NotifyIcon.Visible = true;
             }
         }
